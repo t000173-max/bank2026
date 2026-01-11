@@ -1,6 +1,6 @@
 import api from "./index";
 
-export const registerApi = (data: {
+export const registerApi = async (data: {
   username: string;
   password: string;
   image?: string;
@@ -17,7 +17,7 @@ export const registerApi = (data: {
         } as any)
     }
 
-    api.post("/api/auth/register", data, {
+    await api.post("/api/auth/register", formData, {
         headers: {
             "Content-Type": "multipart/form-data"
         }

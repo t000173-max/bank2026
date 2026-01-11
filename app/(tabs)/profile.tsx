@@ -39,13 +39,15 @@ export default function Profile() {
 
   const user = data?.data ?? data; // حسب شكل الريسبونس
   const username = user?.username ?? "Unknown";
-  const image = user?.image ?? user?.profileImage ?? null;
+  const image = user?.imagePath;
   const balanceNum = Number(user?.balance ?? 0);
 
+//   console.log(image)
+
   return (
-    <View style={{ flex: 1, padding: 20, justifyContent: "center", alignItems: "center", gap: 12 }}>
+    <View style={{ flex: 1, padding: 20, justifyContent: "center", alignItems: "center", gap: 30 }}>
       {image ? (
-        <Image source={{ uri: image }} style={{ width: 120, height: 120, borderRadius: 60 }} />
+        <Image source={{ uri: `https://bank-app-be-eapi-btf5b.ondigitalocean.app/${image}` }} style={{ width: 120, height: 120, borderRadius: 60 }} />
       ) : (
         <View style={{ width: 120, height: 120, borderRadius: 60, borderWidth: 1 }} />
       )}
@@ -58,7 +60,7 @@ export default function Profile() {
           await logout();
           router.replace("/(auth)/login");
         }}
-        style={{ backgroundColor: "black", padding: 12, borderRadius: 10, marginTop: 10 }}
+        style={{ backgroundColor: "red", padding: 13, borderRadius: 30, marginTop: 120, }}
       >
         <Text style={{ color: "white" }}>Logout</Text>
       </TouchableOpacity>

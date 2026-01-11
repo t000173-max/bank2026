@@ -6,8 +6,8 @@ import { Button, Text, View } from "react-native";
 export default function HomeScreen() {
 
   return (
-    <View style={{ padding: 16, gap: 12 }}>
-      <Text style={{ fontSize: 24, fontWeight: "600" }}>Home</Text>
+    <View style={{ padding: 16,paddingTop: 100, gap:12, alignItems: 'center' }}>
+      <Text style={{ fontSize: 28, fontWeight: "600" }}>friends</Text>
       <Text>You are logged in.</Text>
 
       <Button
