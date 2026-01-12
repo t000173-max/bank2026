@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useMutation } from "@tanstack/react-query";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
@@ -30,29 +31,65 @@ export default function Register() {
   });
 
   return (
-    <View style={{ flex: 1, padding: 20, justifyContent: "center", gap: 10 }}>
-      <Text style={{ fontSize: 24, fontWeight: "600" }}>Register</Text>
+    <View style={{ flex: 1, padding: 20, justifyContent: "center", gap: 10, backgroundColor: "#FFFACD" }}>
+      <Text style={{ fontSize: 32, fontWeight: "700", marginBottom: 8 }}>Register</Text>
+      <Text style={{ fontSize: 16, color: "#666", marginBottom: 24 }}>Create your account</Text>
 
-      <TextInput
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
-        style={{ borderWidth: 1, padding: 12, borderRadius: 10 }}
-      />
+      <View style={{ 
+        flexDirection: "row", 
+        alignItems: "center", 
+        backgroundColor: "#FFFFFF", 
+        borderWidth: 1, 
+        borderColor: "#E0E0E0", 
+        borderRadius: 16, 
+        paddingHorizontal: 12, 
+        marginBottom: 12 
+      }}>
+        <Ionicons name="person-outline" size={20} color="#666" style={{ marginRight: 8 }} />
+        <TextInput
+          placeholder="Username"
+          value={username}
+          onChangeText={setUsername}
+          style={{ flex: 1, padding: 12, fontSize: 16 }}
+        />
+      </View>
 
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        style={{ borderWidth: 1, padding: 12, borderRadius: 10 }}
-      />
+      <View style={{ 
+        flexDirection: "row", 
+        alignItems: "center", 
+        backgroundColor: "#FFFFFF", 
+        borderWidth: 1, 
+        borderColor: "#E0E0E0", 
+        borderRadius: 16, 
+        paddingHorizontal: 12, 
+        marginBottom: 12 
+      }}>
+        <Ionicons name="lock-closed-outline" size={20} color="#666" style={{ marginRight: 8 }} />
+        <TextInput
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          style={{ flex: 1, padding: 12, fontSize: 16 }}
+        />
+      </View>
 
       <TouchableOpacity
         onPress={pickImage}
-        style={{ borderWidth: 1, padding: 12, borderRadius: 10 }}
+        style={{ 
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#FFFFFF", 
+          borderWidth: 1, 
+          borderColor: "#E0E0E0", 
+          borderRadius: 16, 
+          padding: 12,
+          marginBottom: 12
+        }}
       >
-        <Text>{image ? "Change Image" : "Pick Profile Image"}</Text>
+        <Ionicons name="image-outline" size={20} color="#666" style={{ marginRight: 8 }} />
+        <Text style={{ fontSize: 16 }}>{image ? "Change Image" : "Pick Profile Image"}</Text>
       </TouchableOpacity>
 
       {image && (
@@ -66,7 +103,7 @@ export default function Register() {
         onPress={() => mutate()}
         disabled={isPending}
         style={{
-          backgroundColor: "black",
+          backgroundColor: "#007AFF",
           padding: 12,
           borderRadius: 10,
           alignItems: "center",

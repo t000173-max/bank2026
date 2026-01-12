@@ -1,4 +1,5 @@
 import { setToken } from "@/api/storage";
+import { Ionicons } from "@expo/vector-icons";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -29,23 +30,48 @@ export default function Login() {
   });
 
   return (
-    <View style={{ flex: 1, padding: 20, justifyContent: "center", gap: 10 }}>
-      <Text style={{ fontSize: 24, fontWeight: "600" }}>Login</Text>
+    <View style={{ flex: 1, padding: 20, justifyContent: "center", gap: 10, backgroundColor: "#FFFACD" }}>
+      <Text style={{ fontSize: 32, fontWeight: "700", marginBottom: 8 }}>Login</Text>
+      <Text style={{ fontSize: 16, color: "#666", marginBottom: 24 }}>Welcome back</Text>
 
-      <TextInput
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
-        style={{ borderWidth: 1, padding: 12, borderRadius: 10 }}
-      />
+      <View style={{ 
+        flexDirection: "row", 
+        alignItems: "center", 
+        backgroundColor: "#FFFFFF", 
+        borderWidth: 1, 
+        borderColor: "#E0E0E0", 
+        borderRadius: 16, 
+        paddingHorizontal: 12, 
+        marginBottom: 12 
+      }}>
+        <Ionicons name="person-outline" size={20} color="#666" style={{ marginRight: 8 }} />
+        <TextInput
+          placeholder="Username"
+          value={username}
+          onChangeText={setUsername}
+          style={{ flex: 1, padding: 12, fontSize: 16 }}
+        />
+      </View>
 
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        style={{ borderWidth: 1, padding: 12, borderRadius: 10 }}
-      />
+      <View style={{ 
+        flexDirection: "row", 
+        alignItems: "center", 
+        backgroundColor: "#FFFFFF", 
+        borderWidth: 1, 
+        borderColor: "#E0E0E0", 
+        borderRadius: 16, 
+        paddingHorizontal: 12, 
+        marginBottom: 12 
+      }}>
+        <Ionicons name="lock-closed-outline" size={20} color="#666" style={{ marginRight: 8 }} />
+        <TextInput
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          style={{ flex: 1, padding: 12, fontSize: 16 }}
+        />
+      </View>
 
       <TouchableOpacity
         onPress={() => mutate()}

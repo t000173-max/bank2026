@@ -1,0 +1,174 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Yellow gradient for the rounded square background - radial for center brightness -->
+    <radialGradient id="yellowGradient" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" style="stop-color:#FFE866;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFB700;stop-opacity:1" />
+    </radialGradient>
+    
+    <!-- Inner highlight for 3D effect -->
+    <radialGradient id="innerHighlight" cx="50%" cy="30%" r="60%">
+      <stop offset="0%" style="stop-color:#FFE866;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#FFD700;stop-opacity:0" />
+    </radialGradient>
+    
+    <!-- Blue gradient for the B letter -->
+    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0080FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0066CC;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Shadow for depth -->
+    <filter id="shadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8"/>
+      <feOffset dx="0" dy="4" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Rounded square background with gradient -->
+  <rect x="64" y="64" width="896" height="896" rx="180" ry="180" 
+        fill="url(#yellowGradient)" filter="url(#shadow)"/>
+  
+  <!-- Inner highlight overlay for 3D convex effect -->
+  <rect x="64" y="64" width="896" height="896" rx="180" ry="180" 
+        fill="url(#innerHighlight)"/>
+  
+  <!-- Bold letter B -->
+  <g transform="translate(512, 512)">
+    <!-- Darker blue shadow/outline for embossed effect -->
+    <path d="M -280, -320 
+             L -280, 320 
+             Q -280, 380 -220, 380 
+             L -80, 380 
+             Q -20, 380 -20, 320 
+             L -20, 200 
+             Q -20, 140 -80, 140 
+             L -220, 140 
+             Q -280, 140 -280, 80 
+             L -280, -80 
+             Q -280, -140 -220, -140 
+             L -80, -140 
+             Q -20, -140 -20, -80 
+             L -20, 40 
+             Q -20, 100 -80, 100 
+             L -220, 100 
+             Q -280, 100 -280, 40 
+             L -280, -320 
+             Z" 
+          fill="#004499" 
+          transform="translate(4, 4)"/>
+    
+    <!-- Main B shape - bright blue with rounded curves -->
+    <path d="M -280, -320 
+             L -280, 320 
+             Q -280, 380 -220, 380 
+             L -80, 380 
+             Q -20, 380 -20, 320 
+             L -20, 200 
+             Q -20, 140 -80, 140 
+             L -220, 140 
+             Q -280, 140 -280, 80 
+             L -280, -80 
+             Q -280, -140 -220, -140 
+             L -80, -140 
+             Q -20, -140 -20, -80 
+             L -20, 40 
+             Q -20, 100 -80, 100 
+             L -220, 100 
+             Q -280, 100 -280, 40 
+             L -280, -320 
+             Z" 
+          fill="url(#blueGradient)"/>
+    
+    <!-- Inner cutout for B shape -->
+    <path d="M -240, -280 
+             L -240, 280 
+             Q -240, 320 -200, 320 
+             L -100, 320 
+             Q -60, 320 -60, 280 
+             L -60, 180 
+             Q -60, 140 -100, 140 
+             L -200, 140 
+             Q -240, 140 -240, 100 
+             L -240, -100 
+             Q -240, -140 -200, -140 
+             L -100, -140 
+             Q -60, -140 -60, -100 
+             L -60, 0 
+             Q -60, 40 -100, 40 
+             L -200, 40 
+             Q -240, 40 -240, 0 
+             L -240, -280 
+             Z" 
+          fill="#FFD700"/>
+    
+    <!-- Inner highlight for 3D effect on B -->
+    <path d="M -240, -280 
+             L -240, 280 
+             Q -240, 320 -200, 320 
+             L -100, 320 
+             Q -60, 320 -60, 280 
+             L -60, 180 
+             Q -60, 140 -100, 140 
+             L -200, 140 
+             Q -240, 140 -240, 100 
+             L -240, -100 
+             Q -240, -140 -200, -140 
+             L -100, -140 
+             Q -60, -140 -60, -100 
+             L -60, 0 
+             Q -60, 40 -100, 40 
+             L -200, 40 
+             Q -240, 40 -240, 0 
+             L -240, -280 
+             Z" 
+          fill="url(#innerHighlight)" 
+          opacity="0.4"/>
+    
+    <!-- Top horizontal stripe (bee-like) - curved following B contour -->
+    <path d="M -200, -50 
+             Q -180, -50 -160, -40 
+             L -60, -40 
+             Q -50, -40 -50, -50 
+             Q -50, -60 -60, -60 
+             L -160, -60 
+             Q -180, -60 -200, -50 
+             Z" 
+          fill="#0066CC"/>
+    
+    <!-- Bottom horizontal stripe (bee-like) -->
+    <path d="M -200, 50 
+             Q -180, 50 -160, 60 
+             L -60, 60 
+             Q -50, 60 -50, 50 
+             Q -50, 40 -60, 40 
+             L -160, 40 
+             Q -180, 40 -200, 50 
+             Z" 
+          fill="#0066CC"/>
+    
+    <!-- Small dash in lower right curve -->
+    <rect x="20" y="200" width="40" height="12" rx="6" fill="#0066CC"/>
+    
+    <!-- Sparkle/star in upper left curve - white four-pointed star -->
+    <g transform="translate(-200, -220)">
+      <path d="M 0, -16 L 5, -5 L 16, -5 L 7, 2 L 11, 16 L 0, 8 L -11, 16 L -7, 2 L -16, -5 L -5, -5 Z" 
+            fill="#FFFFFF" 
+            opacity="0.95"/>
+      <!-- Subtle glow effect -->
+      <path d="M 0, -16 L 5, -5 L 16, -5 L 7, 2 L 11, 16 L 0, 8 L -11, 16 L -7, 2 L -16, -5 L -5, -5 Z" 
+            fill="#FFFFFF" 
+            opacity="0.3" 
+            transform="scale(1.2)"/>
+    </g>
+  </g>
+</svg>
+
