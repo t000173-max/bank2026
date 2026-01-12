@@ -25,3 +25,17 @@ export const getTransactionsApi = async () => {
   return res.data;
 };
 
+export const depositMoneyApi = async (data: {
+  amount: number;
+}) => {
+  try {
+    console.log("Deposit API call:", data);
+    const res = await api.post("/api/transactions/deposit", data);
+    console.log("Deposit API response:", res.data);
+    return res.data;
+  } catch (error: any) {
+    console.error("Deposit API error:", error);
+    throw error;
+  }
+};
+

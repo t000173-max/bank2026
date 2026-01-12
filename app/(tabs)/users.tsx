@@ -100,12 +100,16 @@ type User = {
   id: string;
   username: string;
   imagePath?: string;
+  balance?: number;
 };
 
 const UserCard = ({ user, onPress, onTransferPress }: { user: User; onPress: () => void; onTransferPress: () => void }) => {
   const imageUrl = user.imagePath
     ? `https://bank-app-be-eapi-btf5b.ondigitalocean.app/${user.imagePath}`
     : null;
+  
+  const balanceNum = Number(user?.balance ?? 0);
+  const isVIP = balanceNum > 10000;
 
   return (
     <TouchableOpacity
@@ -128,7 +132,12 @@ const UserCard = ({ user, onPress, onTransferPress }: { user: User; onPress: () 
         ) : (
           <View style={{ width: 80, height: 80, borderRadius: 40, backgroundColor: "#f0f0f0", marginBottom: 12, alignSelf: "center" }} />
         )}
-        <Text style={{ fontSize: 18, fontWeight: "600", textAlign: "center" }}>{user.username}</Text>
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+          <Text style={{ fontSize: 18, fontWeight: "600", textAlign: "center" }}>{user.username}</Text>
+          {isVIP && (
+            <Text style={{ fontSize: 18, marginLeft: 6 }}>⭐</Text>
+          )}
+        </View>
       </View>
       <TouchableOpacity
         onPress={(e) => {
@@ -163,6 +172,9 @@ const ProfileModal = ({
   const imageUrl = user?.imagePath
     ? `https://bank-app-be-eapi-btf5b.ondigitalocean.app/${user.imagePath}`
     : null;
+  
+  const balanceNum = Number(user?.balance ?? 0);
+  const isVIP = balanceNum > 10000;
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
@@ -219,9 +231,14 @@ const ProfileModal = ({
               }}
             />
           )}
-          <Text style={{ fontSize: 24, fontWeight: "700", marginBottom: 8, textAlign: "center" }}>
-            {user?.username}
-          </Text>
+          <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+            <Text style={{ fontSize: 24, fontWeight: "700", marginBottom: 8, textAlign: "center" }}>
+              {user?.username}
+            </Text>
+            {isVIP && (
+              <Text style={{ fontSize: 22, marginLeft: 8, marginBottom: 8 }}>⭐</Text>
+            )}
+          </View>
           <View style={{ flexDirection: "row", gap: 12, marginTop: 24, width: "100%" }}>
             <TouchableOpacity
               onPress={onClose}

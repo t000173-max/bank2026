@@ -1,4 +1,4 @@
-import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
+import { CameraView, useCameraPermissions } from "expo-camera";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -66,7 +66,7 @@ export default function ScannerScreen() {
     <View style={styles.container}>
       <CameraView
         style={styles.camera}
-        facing={CameraType.back}
+        facing={"back"}
         onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
         barcodeScannerSettings={{
           barcodeTypes: ["qr"],

@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { Alert, Animated, Image, Keyboard, KeyboardAvoidingView, Modal, Platform, RefreshControl, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 import { meApi } from "../../api/auth";
-import { getTransactionsApi, getUsersApi, transferMoneyApi } from "../../api/users";
+import { depositMoneyApi, getTransactionsApi, getUsersApi, transferMoneyApi } from "../../api/users";
 import { theme } from "../../constants/theme";
 import { useAuth } from "../../context/AuthContext";
 
@@ -734,6 +734,139 @@ const SendMoneyFromQRModal = ({
   );
 };
 
+const DepositModal = ({
+  visible,
+  onClose,
+  onDeposit,
+  isLoading,
+}: {
+  visible: boolean;
+  onClose: () => void;
+  onDeposit: (amount: number) => void;
+  isLoading: boolean;
+}) => {
+  const [amount, setAmount] = useState("");
+
+  useEffect(() => {
+    if (!visible) {
+      setAmount("");
+    }
+  }, [visible]);
+
+  const handleIncrease = (value: number) => {
+    const currentAmount = parseFloat(amount) || 0;
+    setAmount((currentAmount + value).toString());
+  };
+
+  const handleDeposit = () => {
+    const numAmount = parseFloat(amount);
+    if (numAmount > 0) {
+      onDeposit(numAmount);
+      setAmount("");
+    }
+  };
+
+  return (
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: 20,
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: "#fff",
+            borderRadius: 16,
+            padding: 24,
+            width: "100%",
+            maxWidth: 400,
+          }}
+        >
+          <Text style={{ fontSize: 20, fontWeight: "700", marginBottom: 8, textAlign: "left" }}>
+            Deposit Money
+          </Text>
+
+          <Text style={{ fontSize: 16, color: "#666", marginBottom: 16, textAlign: "left" }}>Amount</Text>
+
+          <TextInput
+            value={amount}
+            onChangeText={setAmount}
+            placeholder="0.00"
+            keyboardType="decimal-pad"
+            style={{
+              borderWidth: 1,
+              borderColor: "#ddd",
+              borderRadius: 8,
+              padding: 12,
+              fontSize: 18,
+              marginBottom: 16,
+              textAlign: "left",
+            }}
+          />
+
+          <View style={{ flexDirection: "row", gap: 8, marginBottom: 16, justifyContent: "center" }}>
+            <TouchableOpacity
+              onPress={() => handleIncrease(10)}
+              style={{ backgroundColor: "#f0f0f0", padding: 10, borderRadius: 8, minWidth: 60, alignItems: "center" }}
+            >
+              <Text style={{ fontSize: 16, fontWeight: "600" }}>+10</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleIncrease(50)}
+              style={{ backgroundColor: "#f0f0f0", padding: 10, borderRadius: 8, minWidth: 60, alignItems: "center" }}
+            >
+              <Text style={{ fontSize: 16, fontWeight: "600" }}>+50</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleIncrease(100)}
+              style={{ backgroundColor: "#f0f0f0", padding: 10, borderRadius: 8, minWidth: 60, alignItems: "center" }}
+            >
+              <Text style={{ fontSize: 16, fontWeight: "600" }}>+100</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{ flexDirection: "row", gap: 8 }}>
+            <TouchableOpacity
+              onPress={onClose}
+              style={{
+                flex: 1,
+                backgroundColor: "#f0f0f0",
+                padding: 14,
+                borderRadius: 8,
+                alignItems: "center",
+              }}
+              disabled={isLoading}
+            >
+              <Text style={{ fontSize: 16, fontWeight: "600" }}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleDeposit}
+              style={{
+                flex: 1,
+                backgroundColor: "#4CAF50",
+                padding: 14,
+                borderRadius: 8,
+                alignItems: "center",
+              }}
+              disabled={isLoading || !amount || parseFloat(amount) <= 0}
+            >
+              {isLoading ? (
+                <MoneyLoader size={20} color="white" />
+              ) : (
+                <Text style={{ color: "white", fontSize: 16, fontWeight: "600" }}>Deposit</Text>
+              )}
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+};
+
 const AllTransactions = ({ visible }: { visible: boolean }) => {
   const { data: transactionsData, isLoading, refetch, isFetching } = useQuery({
     queryKey: ["transactions"],
@@ -901,6 +1034,7 @@ export default function Home() {
   const [showQRCode, setShowQRCode] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
   const [showSendFromQR, setShowSendFromQR] = useState(false);
+  const [showDeposit, setShowDeposit] = useState(false);
   const [qrRecipient, setQrRecipient] = useState<{ username: string; id: string } | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const queryClient = useQueryClient();
@@ -944,6 +1078,21 @@ export default function Home() {
     onError: (error: any) => {
       const errorMessage = error?.response?.data?.message || error?.message || "An error occurred while sending money";
       console.error("Transfer error:", error);
+      Alert.alert("Error", errorMessage);
+    },
+  });
+
+  const depositMutation = useMutation({
+    mutationFn: depositMoneyApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      Alert.alert("Success", "Money deposited successfully");
+      setShowDeposit(false);
+    },
+    onError: (error: any) => {
+      const errorMessage = error?.response?.data?.message || error?.message || "An error occurred while depositing money";
+      console.error("Deposit error:", error);
       Alert.alert("Error", errorMessage);
     },
   });
@@ -995,6 +1144,17 @@ export default function Home() {
   const handleQRScanSuccess = (username: string, userId: string) => {
     setQrRecipient({ username, id: userId });
     setShowSendFromQR(true);
+  };
+
+  const handleDeposit = (amount: number) => {
+    if (isNaN(amount) || amount <= 0) {
+      Alert.alert("Error", "Invalid amount");
+      return;
+    }
+
+    depositMutation.mutate({
+      amount: Number(amount),
+    });
   };
 
   // معالجة البيانات من Scanner عند مسح الباركود
@@ -1143,6 +1303,21 @@ export default function Home() {
               <Ionicons name="scan" size={24} color="#FFF" />
               <Text style={{ color: "#FFF", fontSize: 16, fontWeight: "600" }}>Scan QR Code</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setShowDeposit(true)}
+              style={{
+                backgroundColor: "#5856D6",
+                padding: 16,
+                borderRadius: 12,
+                alignItems: "center",
+                flexDirection: "row",
+                justifyContent: "center",
+                gap: 8,
+              }}
+            >
+              <Ionicons name="add-circle" size={24} color="#FFF" />
+              <Text style={{ color: "#FFF", fontSize: 16, fontWeight: "600" }}>Deposit</Text>
+            </TouchableOpacity>
           </View>
         )}
 
@@ -1199,6 +1374,13 @@ export default function Home() {
         recipientId={qrRecipient?.id ?? ""}
         onTransfer={handleTransferFromQR}
         isLoading={transferMutation.isPending}
+      />
+
+      <DepositModal
+        visible={showDeposit}
+        onClose={() => setShowDeposit(false)}
+        onDeposit={handleDeposit}
+        isLoading={depositMutation.isPending}
       />
     </View>
   );
